@@ -1,8 +1,9 @@
-vpc_subnet_id: subnet-0b6ac345bd9095620
-security_group: Allow-All
-image_id: ami-09c813fb71547fc4f
+vpc_subnet_id: subnet-0b6ac345bd9095620 # Replace with your VPC subnet ID
+security_group: Allow-All # Replace with your security group name
+image_id: ami-09c813fb71547fc4f # My AMI ID; replace with your own
 region: us-east-1
 instances:
   - db
   - backend
   - frontend
+exact_count: 3 # Number of instances to launch

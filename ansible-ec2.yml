@@ -9,7 +9,7 @@
     - name: Launch EC2 Instance
       amazon.aws.ec2_instance:
         instance_type: t2.micro
-        exact_count: 3 # Number of instances to launch
+        exact_count: "{{ exact_count }}" # Number of instances to launch
         name: "{{ item }}"
         vpc_subnet_id: "{{ vpc_subnet_id }}"
         security_groups:
@@ -18,10 +18,13 @@
         region: "{{ region }}"
         tags:
           Name: "{{ item }}"
-      user_data: "{{ lookup('file', 'tools_userdata.sh') }}"
+        user_data: "{{ lookup('file', 'tools_userdata.sh') }}"
       loop: "{{ instances }}"
       register: ec2_instances_info
-
-    - name: Print EC2 Instances Information
+    
+    - name: Print only public IPs of EC2 instances
       ansible.builtin.debug:
-        var: ec2_instances_info
+        msg: "The IP address of {{ item.item }} server is: {{ item.instances[0].public_ip_address }}"
+      loop: "{{ ec2_instances_info.results }}"
+      loop_control:
+        label: "{{ item.item }}"
