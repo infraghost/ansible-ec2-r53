@@ -1,0 +1,8 @@
+vpc_subnet_id: subnet-0b6ac345bd9095620
+security_group: Allow-All
+image_id: ami-09c813fb71547fc4f
+region: us-east-1
+instances:
+  - db
+  - backend
+  - frontend

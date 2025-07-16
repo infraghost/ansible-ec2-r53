@@ -1,0 +1,25 @@
+- name: Provisioning AWS EC2 Instance
+  hosts: localhost
+  gather_facts: no
+
+  vars_files:
+    - ec2_vars.yml
+
+  tasks:
+    - name: Launch EC2 Instance
+      amazon.aws.ec2_instance:
+        instance_type: t2.micro
+        name: "{{ item }}"
+        vpc_subnet_id: "{{ vpc_subnet_id }}"
+        security_groups:
+          - "{{ security_group }}"
+        image_id: "{{ image_id }}"
+        region: "{{ region }}"
+        tags:
+          Name: "{{ item }}"
+      loop: "{{ instances }}"
+      register: ec2_instances_info
+
+    - name: Print EC2 Instances Information
+      ansible.builtin.debug:
+        var: ec2_instances_info
