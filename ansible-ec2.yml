@@ -9,6 +9,7 @@
     - name: Launch EC2 Instance
       amazon.aws.ec2_instance:
         instance_type: t2.micro
+        exact_count: 3 # Number of instances to launch
         name: "{{ item }}"
         vpc_subnet_id: "{{ vpc_subnet_id }}"
         security_groups:
@@ -17,6 +18,7 @@
         region: "{{ region }}"
         tags:
           Name: "{{ item }}"
+      user_data: "{{ lookup('file', 'tools_userdata.sh') }}"
       loop: "{{ instances }}"
       register: ec2_instances_info
 
